@@ -1,16 +1,32 @@
 # This program retrieves the gene set definitions according to different repositories
-
+##################
+## Installing / loading required libraries
+##################
 if (!require("BiocManager")) {
   install.packages("BiocManager", ask =FALSE)
   library("BiocManager")
 }
-
-BiocManager::install("tidyverse", ask =FALSE)
+if (!require("tidyverse")) {
+  BiocManager::install("tidyverse", ask =FALSE)
+  library("tidyverse")
+}
 if (!require("EnrichmentBrowser")) {
   BiocManager::install("EnrichmentBrowser", ask =FALSE)
   library("EnrichmentBrowser")
 }
 
+############
+## Loading libraries defined by the user
+############
+
+
+############
+## Variables defined by the user
+############
+path_code <- c("/media/rmejia/mountme88/code/Pathway_analysis")
+path_code <- normalizePath( path_code )
+
+source( paste0(path_code,"/libraries/","list_of_chr_to_df.R") )
 
 # Obtaining the gene sets
 rm(list = ls())
@@ -18,22 +34,14 @@ kegg.gs <- getGenesets(org = "hsa", db = "kegg")
 go.gs <- getGenesets(org = "hsa", db = "go")
 go.gs.BP.GOdb <- getGenesets(org = "hsa", db = "go", onto="BP", mode="GO.db")
 
-str(go.gs.BP.GOdb)
-length(go.gs.BP.GOdb)
-str(go.gs)
+go.gs_toy <- go.gs[1:10]
+go.gs_df <- list_of_chr_to_df(go.gs)
 
-str(kegg.gs)
-length(kegg.gs)
 
 go.gs.GOdb <- getGenesets(org = "hsa", db = "go", go.onto = "BP", go.mode = "GO.db")
 ?get.go.genesets
 
-BiocManager::install(update=TRUE)
-BiocManager::version()
 
-sessionInfo()
-BiocManager::valid()
-?BiocManager
 go.gs.GOdb <- getGenesets(org = "hsa", db = "go", onto = "BP", go.mode = "GO.db")
 go.gs.GOdb <- getGenesets(org = "hsa", db = "go")
 
